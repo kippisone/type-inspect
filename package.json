@@ -1,8 +1,8 @@
 {
   "name": "type-inspector",
   "version": "0.0.0",
-  "description": "Type Inspector ==============",
-  "main": "typeInspector.js",
+  "description": "Type Inspector",
+  "main": "src/typeInspector.js",
   "scripts": {
     "test": "mocha --reporter lagoon-reporter tests/*.spec.js"
   },
@@ -21,5 +21,10 @@
   "bugs": {
     "url": "https://github.com/Andifeind/type-inspector/issues"
   },
-  "homepage": "https://github.com/Andifeind/type-inspector#readme"
+  "homepage": "https://github.com/Andifeind/type-inspector#readme",
+  "devDependencies": {
+    "inspect.js": "1.9.0",
+    "lagoon-reporter": "0.3.4",
+    "mocha": "4.0.1"
+  }
 }
