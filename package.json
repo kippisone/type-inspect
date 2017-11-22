@@ -1,0 +1,25 @@
+{
+  "name": "type-inspector",
+  "version": "0.0.0",
+  "description": "Type Inspector ==============",
+  "main": "typeInspector.js",
+  "scripts": {
+    "test": "mocha --reporter lagoon-reporter tests/*.spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Andifeind/type-inspector.git"
+  },
+  "keywords": [
+    "inspect",
+    "inspector",
+    "log",
+    "print"
+  ],
+  "author": "Andi Heinkelein <andifeind@noname-media.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Andifeind/type-inspector/issues"
+  },
+  "homepage": "https://github.com/Andifeind/type-inspector#readme"
+}
