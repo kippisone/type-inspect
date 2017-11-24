@@ -38,7 +38,8 @@ describe('TypeInspector', () => {
 
     types.forEach((t) => {
       it(`returns type ${t.type} if input is ${t.name}`, () => {
-        inspect(TypeInspector.getType(t.value)).isEql(t.type)
+        const ts = new TypeInspector()
+        inspect(ts.getType(t.value)).isEql(t.type)
       })
     })
   })
@@ -46,7 +47,8 @@ describe('TypeInspector', () => {
   describe('inspectValue', () => {
     it('inspects a single value of type string', () => {
       const val = 'bla'
-      inspect(TypeInspector.inspectValue(val)).isEql({
+      const ts = new TypeInspector()
+      inspect(ts.inspectValue(val)).isEql({
         type: 'string',
         subType: 'string',
         value: 'bla'
@@ -55,7 +57,8 @@ describe('TypeInspector', () => {
 
     it('inspects a single value of type null', () => {
       const val = null
-      inspect(TypeInspector.inspectValue(val)).isEql({
+        const ts = new TypeInspector()
+      inspect(ts.inspectValue(val)).isEql({
         type: 'object',
         subType: 'null',
         value: null
@@ -72,7 +75,8 @@ describe('TypeInspector', () => {
         }
       }
 
-      const inspected = TypeInspector.inspectObject(obj)
+      const ts = new TypeInspector()
+      const inspected = ts.inspectObject(obj)
       inspect(inspected).isObject()
       inspect(inspected).isEql({
         type: 'object',
@@ -96,7 +100,8 @@ describe('TypeInspector', () => {
         ]
       }
 
-      const inspected = TypeInspector.inspectObject(obj)
+      const ts = new TypeInspector()
+      const inspected = ts.inspectObject(obj)
       inspect(inspected).isObject()
       inspect(inspected).isEql({
         type: 'object',

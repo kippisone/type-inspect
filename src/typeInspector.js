@@ -1,5 +1,13 @@
-class Inspector {
-  static getType (value) {
+class TypeInspector {
+  constructor (opts) {
+    opts = opts || {}
+    this.dept = opts.dept || 3
+    this.toStringFn = opts.toString || function toString (val) {
+      return val.toString()
+    }
+  }
+
+  getType (value) {
     const type = typeof value
     if (value === null) return 'null'
     if (value === undefined) return 'undefined'
@@ -32,20 +40,27 @@ class Inspector {
   }
 
   static inspect (value) {
-    return {
-      type: typeof value,
-      subType: this.getType(value)
+    const typeInspector = new TypeInspector()
+    const type = typeof value;
+    if (type === 'object') {
+      return typeInspector.inspectObject(value)
     }
+
+    return typeInspector.inspectValue(value)
   }
 
-  static inspectObject (obj, dept) {
+  inspectObject (obj, dept) {
     if (!typeof obj === 'object' && obj !== null) return null
     dept = dept || 3
 
     const keys = Object.keys(obj)
     const inspected = {}
 
-    const inspectedValue = this.inspect(obj)
+    const inspectedValue = {
+      type: typeof obj,
+      subType: this.getType(obj)
+    }
+
     keys.forEach((key) => {
       let val = obj[key]
       if (Array.isArray(val)) {
@@ -63,8 +78,12 @@ class Inspector {
     return inspectedValue
   }
 
-  static inspectArray (arr, dept) {
-    const inspectedValue = this.inspect(arr)
+  inspectArray (arr, dept) {
+    const inspectedValue = {
+      type: typeof arr,
+      subType: this.getType(arr)
+    }
+
     inspectedValue.value = arr.map((item) => {
       if (Array.isArray(item)) {
         return this.inspectArray(item, dept - 1)
@@ -78,13 +97,17 @@ class Inspector {
     return inspectedValue
   }
 
-  static inspectValue (val, dept) {
-    const inspectedValue = this.inspect(val)
+  inspectValue (val, dept) {
+    const inspectedValue = {
+      type: typeof val,
+      subType: this.getType(val)
+    }
+
     inspectedValue.value = val
     return inspectedValue
   }
 
-  static isGeneratorFunction (fn) {
+  isGeneratorFunction (fn) {
     try {
       return eval('Object.getPrototypeOf(fn).constructor === Object.getPrototypeOf(function* () { yield;}).constructor')
     } catch(err) {
@@ -92,7 +115,7 @@ class Inspector {
     }
   }
 
-  static isAsyncFunction (fn) {
+  isAsyncFunction (fn) {
     try {
       return eval('Object.getPrototypeOf(fn).constructor === Object.getPrototypeOf(async function(){}).constructor')
     } catch(err) {
@@ -100,7 +123,7 @@ class Inspector {
     }
   }
 
-  static isClass (fn) {
+  isClass (fn) {
     try {
       return /^class/.test(fn.toString())
     } catch(err) {
@@ -109,4 +132,4 @@ class Inspector {
   }
 }
 
-module.exports = Inspector
+module.exports = TypeInspector
