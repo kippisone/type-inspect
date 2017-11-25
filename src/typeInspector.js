@@ -1,10 +1,10 @@
+'use strict'
+
 class TypeInspector {
   constructor (opts) {
-    opts = opts || {}
+    opts = opts || {}
     this.dept = opts.dept || 3
-    this.toStringFn = opts.toString || function toString (val) {
-      return val.toString()
-    }
+    this.toStringFn = opts.toString
   }
 
   getType (value) {
@@ -39,14 +39,13 @@ class TypeInspector {
     return type
   }
 
-  static inspect (value) {
-    const typeInspector = new TypeInspector()
+  inspect (value) {
     const type = typeof value;
     if (type === 'object') {
-      return typeInspector.inspectObject(value)
+      return this.inspectObject(value)
     }
 
-    return typeInspector.inspectValue(value)
+    return this.inspectValue(value)
   }
 
   inspectObject (obj, dept) {
@@ -59,6 +58,10 @@ class TypeInspector {
     const inspectedValue = {
       type: typeof obj,
       subType: this.getType(obj)
+    }
+
+    if (this.toStringFn) {
+      inspectedValue.toString = this.toStringFn
     }
 
     keys.forEach((key) => {
@@ -84,6 +87,10 @@ class TypeInspector {
       subType: this.getType(arr)
     }
 
+    if (this.toStringFn) {
+      inspectedValue.toString = this.toStringFn
+    }
+
     inspectedValue.value = arr.map((item) => {
       if (Array.isArray(item)) {
         return this.inspectArray(item, dept - 1)
@@ -101,6 +108,10 @@ class TypeInspector {
     const inspectedValue = {
       type: typeof val,
       subType: this.getType(val)
+    }
+
+    if (this.toStringFn) {
+      inspectedValue.toString = this.toStringFn
     }
 
     inspectedValue.value = val
@@ -133,3 +144,7 @@ class TypeInspector {
 }
 
 module.exports = TypeInspector
+module.exports.inspect = (val) => {
+  const typeInspector = new TypeInspector()
+  return typeInspector.inspect(val)
+}
