@@ -40,45 +40,52 @@ class TypeInspector {
   }
 
   inspect (value) {
-    const type = typeof value;
-    if (type === 'object') {
-      return this.inspectObject(value)
+    const inspected = {
+      type: typeof value,
+      subType: this.getType(value),
+      value
+    }
+
+    if (inspected.subType === 'array') {
+      return this.inspectArray(value)
+    }
+
+    if (inspected.type === 'object') {
+      return this.inspectObject(inspected)
     }
 
     return this.inspectValue(value)
   }
 
-  inspectObject (obj, dept) {
-    if (!typeof obj === 'object' && obj !== null) return null
+  inspectObject (inspected, dept) {
+    if (inspected.value === null) return inspected
+    if (inspected.subType === 'date') return inspected
+    if (inspected.subType === 'regexp') return inspected
+    if (inspected.subType === 'map') return this.inspectMap(inspected)
     dept = dept || 3
 
-    const keys = Object.keys(obj)
-    const inspected = {}
-
-    const inspectedValue = {
-      type: typeof obj,
-      subType: this.getType(obj)
-    }
+    const keys = Object.keys(inspected.value)
+    const inspectedObj = {}
 
     if (this.toStringFn) {
-      inspectedValue.toString = this.toStringFn
+      inspected.toString = this.toStringFn
     }
 
     keys.forEach((key) => {
-      let val = obj[key]
+      let val = inspected.value[key]
       if (Array.isArray(val)) {
         val = this.inspectArray(val, dept - 1)
       } else if (typeof val === 'object' && val !== null) {
-        val = this.inspectObject(val, dept - 1)
+        val = this.inspect(val, dept - 1)
       } else {
         val = this.inspectValue(val)
       }
 
-      inspected[key] = val
+      inspectedObj[key] = val
     })
 
-    inspectedValue.value = inspected
-    return inspectedValue
+    inspected.value = inspectedObj
+    return inspected
   }
 
   inspectArray (arr, dept) {
@@ -95,7 +102,7 @@ class TypeInspector {
       if (Array.isArray(item)) {
         return this.inspectArray(item, dept - 1)
       } else if (typeof item === 'object' && item !== null) {
-        return this.inspectObject(item, dept - 1)
+        return this.inspect(item, dept - 1)
       }
 
       return this.inspectValue(item, dept - 1)
@@ -116,6 +123,18 @@ class TypeInspector {
 
     inspectedValue.value = val
     return inspectedValue
+  }
+
+  inspectMap (inspected) {
+    const mapData = []
+    inspected.value.forEach((val, key) => {
+      mapData.push([key, this.inspect(val)])
+    })
+
+    inspected.name = 'Map'
+    inspected.size = inspected.value.size
+    inspected.value = mapData
+    return inspected
   }
 
   isGeneratorFunction (fn) {
