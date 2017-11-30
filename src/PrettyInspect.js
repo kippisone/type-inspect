@@ -69,15 +69,13 @@ class PrettyInspect {
   prettifyObject (obj) {
     const keys = Object.keys(obj.value)
     let prittyfied = []
-    this.indention += 1
-    let indentStr = this.indentionStr.repeat(this.indention)
+    let indentStr = this.indent(1)
     keys.forEach((key) => {
       const val = this.prettifyValue(obj.value[key])
       prittyfied.push(`${indentStr}${key}: ${val}`)
     })
 
-    this.indention -= 1
-    indentStr = this.indentionStr.repeat(this.indention)
+    indentStr = this.indent(-1)
     return `{\n${prittyfied.join(',\n')}\n${indentStr}}`
   }
 
@@ -104,10 +102,12 @@ class PrettyInspect {
 
   prettifyMap (map) {
     const prettified = []
-    map.value.forEach((val, key) => {
-      prettified.push(`${this.indent()}${key}: ${this.prettifyValue(val)}`)
+    const str = ` Map {\n`
+    this.indent(1)
+    map.value.forEach((item) => {
+      prettified.push(`${this.indent()}${item[0]}: ${this.prettifyValue(item[1])}`)
     })
-    return ` Map {\n${this.indent(1)}${prettified.join(',\n')}\n${this.indent(-1)}}`
+    return `${str}${prettified.join(',\n')}\n${this.indent(-1)}}`
   }
 
   indent (size) {
