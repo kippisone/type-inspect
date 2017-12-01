@@ -33,8 +33,8 @@ describe('TypeInspector', () => {
 
     if (is.asyncSupported) {
       types.push(
-        { type: 'async-function', name: 'Async function', value: eval('(async function () {})') },
-        { type: 'async-function', name: 'Async function', value: eval('(async () => {})') }
+        { type: 'async', name: 'Async function', value: eval('(async function () {})') },
+        { type: 'async', name: 'Async function', value: eval('(async () => {})') }
       )
     }
 
