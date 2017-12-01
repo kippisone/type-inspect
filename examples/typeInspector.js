@@ -4,9 +4,13 @@ const PrettyInspect = require('../src/PrettyInspect');
 
 const testMap = new Map()
 testMap.set('one', 'One');
-testMap.set('one', 'One');
 testMap.set('two', 2);
 testMap.set('thre', { num: 3 });
+
+const testSet = new Set()
+testSet.add('One');
+testSet.add(2);
+testSet.add({ num: 3 });
 
 const fixtures = [
   [ 'Object', { bla: 'Bla', blubb: 'Blubb' } ],
@@ -21,7 +25,8 @@ const fixtures = [
   [ 'Class', class {} ],
   [ 'Date', new Date() ],
   [ 'RegExp', /^foo/ ],
-  [ 'Map', testMap ]
+  [ 'Map', testMap ],
+  [ 'Set', testSet ]
 ]
 
 fixtures.forEach((item) => {

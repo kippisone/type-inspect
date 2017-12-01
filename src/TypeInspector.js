@@ -62,6 +62,7 @@ class TypeInspector {
     if (inspected.subType === 'date') return inspected
     if (inspected.subType === 'regexp') return inspected
     if (inspected.subType === 'map') return this.inspectMap(inspected)
+    if (inspected.subType === 'set') return this.inspectSet(inspected)
     dept = dept || 3
 
     const keys = Object.keys(inspected.value)
@@ -134,6 +135,18 @@ class TypeInspector {
     inspected.name = 'Map'
     inspected.size = inspected.value.size
     inspected.value = mapData
+    return inspected
+  }
+
+  inspectSet (inspected) {
+    const setData = []
+    inspected.value.forEach((val) => {
+      setData.push(this.inspect(val))
+    })
+
+    inspected.name = 'Set'
+    inspected.size = inspected.value.size
+    inspected.value = setData
     return inspected
   }
 

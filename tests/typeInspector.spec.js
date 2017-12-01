@@ -190,4 +190,38 @@ describe('TypeInspector', () => {
       })
     })
   })
+
+  describe('inspectSet()', () => {
+    it('inspects an object', () => {
+      const set = new Set()
+      set.add('One')
+      set.add('2')
+      set.add({ num: 'three' })
+
+      const obj = {
+        type: 'object',
+        subType: 'set',
+        size: 3,
+        name: 'Set',
+        value: set,
+      }
+
+      const ts = new TypeInspector()
+      const inspected = ts.inspectMap(obj)
+      inspect(inspected).isObject()
+      inspect(inspected).hasProps({
+        type: 'object',
+        subType: 'set',
+        value: [
+          { type: 'string', subType: 'string', value: 'two'},
+          { type: 'number', subType: 'number', value: 2},
+          { type: 'object', subType: 'null', value: { num: {
+            type: 'number',
+            subType: 'number',
+            value: 3
+          } }}
+        ]
+      })
+    })
+  })
 })

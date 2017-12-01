@@ -55,6 +55,10 @@ class PrettyInspect {
         return `${typeSymbol}${this.prettifyMap(inspected)}`
       }
 
+      if (inspected.subType === 'set') {
+        return `${typeSymbol}${this.prettifySet(inspected)}`
+      }
+
       const val = this.prettifyObject(inspected)
       return `${typeSymbol}${val}`
     }
@@ -106,6 +110,16 @@ class PrettyInspect {
     this.indent(1)
     map.value.forEach((item) => {
       prettified.push(`${this.indent()}${item[0]}: ${this.prettifyValue(item[1])}`)
+    })
+    return `${str}${prettified.join(',\n')}\n${this.indent(-1)}}`
+  }
+
+  prettifySet (set) {
+    const prettified = []
+    const str = ` Set {\n`
+    this.indent(1)
+    set.value.forEach((item) => {
+      prettified.push(`${this.indent()}${this.prettifyValue(item)}`)
     })
     return `${str}${prettified.join(',\n')}\n${this.indent(-1)}}`
   }
