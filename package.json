@@ -1,6 +1,6 @@
 {
   "name": "type-inspector",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Type Inspector",
   "main": "src/TypeInspector.js",
   "scripts": {
