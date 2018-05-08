@@ -1,8 +1,9 @@
 'use strict'
 
 const TypeInspector = require('./TypeInspector')
+const colorfy = require('colorfy')
 
-// 🅾🅰🅽🆄🅸🅽🆂🅳🆁
+// 🅾🅰🅽🆄🅸🅽🆂🅳🆁 🅲🅵🅰🅶
 // ➊➋➌➍➎➏➐➑➒➓⓫⓬⓭⓮⓯⓰⓱⓲⓳⓴
 
 const TYPESET = {
@@ -15,19 +16,23 @@ const TYPESET = {
   'undefined': '🆄',
   'date': '🅳',
   'regexp': '🆁',
+  'function': '🅵',
   'unknown': '?'
 }
 
 class PrettyInspect {
-  constructor () {
+  constructor (opts) {
+    opts = opts || {}
     this.indention = 0
     this.indentionStr = '  '
+    this.cf = colorfy(opts.colors || process.tty.)
   }
 
   prettify (val) {
     const ts = new TypeInspector()
     const inspected = ts.inspect(val)
-    return this.prettifyValue(inspected)
+    this.prettifyValue(inspected)
+    return this.colorfy()
   }
 
   prettifyValue (inspected) {
@@ -100,13 +105,13 @@ class PrettyInspect {
     return `${date.value.toString()}`
   }
 
-  prettifyRegExp (date) {
-    return `${date.value.toString()}`
+  prettifyRegExp (reg) {
+    return `${reg.value.toString()}`
   }
 
   prettifyMap (map) {
     const prettified = []
-    const str = ` Map {\n`
+    const str = `Map {\n`
     this.indent(1)
     map.value.forEach((item) => {
       prettified.push(`${this.indent()}${item[0]}: ${this.prettifyValue(item[1])}`)
@@ -116,7 +121,7 @@ class PrettyInspect {
 
   prettifySet (set) {
     const prettified = []
-    const str = ` Set {\n`
+    const str = `Set {\n`
     this.indent(1)
     set.value.forEach((item) => {
       prettified.push(`${this.indent()}${this.prettifyValue(item)}`)
