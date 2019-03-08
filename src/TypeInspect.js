@@ -1,10 +1,10 @@
 'use strict'
 
-class TypeInspector {
+class TypeInspect {
   constructor (opts) {
     opts = opts || {}
     this.dept = opts.dept || 3
-    this.toStringFn = opts.toString
+    this.toStringFn = opts.hasOwnProperty('toString') ? opts.toString : null
   }
 
   getType (value) {
@@ -42,11 +42,11 @@ class TypeInspector {
   inspect (value) {
     const inspected = {
       type: typeof value,
-      subType: this.getType(value),
+      kind: this.getType(value),
       value
     }
 
-    if (inspected.subType === 'array') {
+    if (inspected.kind === 'array') {
       return this.inspectArray(value)
     }
 
@@ -59,10 +59,10 @@ class TypeInspector {
 
   inspectObject (inspected, dept) {
     if (inspected.value === null) return inspected
-    if (inspected.subType === 'date') return inspected
-    if (inspected.subType === 'regexp') return inspected
-    if (inspected.subType === 'map') return this.inspectMap(inspected)
-    if (inspected.subType === 'set') return this.inspectSet(inspected)
+    if (inspected.kind === 'date') return inspected
+    if (inspected.kind === 'regexp') return inspected
+    if (inspected.kind === 'map') return this.inspectMap(inspected)
+    if (inspected.kind === 'set') return this.inspectSet(inspected)
     dept = dept || 3
 
     const keys = Object.keys(inspected.value)
@@ -92,7 +92,7 @@ class TypeInspector {
   inspectArray (arr, dept) {
     const inspectedValue = {
       type: typeof arr,
-      subType: this.getType(arr)
+      kind: this.getType(arr)
     }
 
     if (this.toStringFn) {
@@ -115,7 +115,7 @@ class TypeInspector {
   inspectValue (val, dept) {
     const inspectedValue = {
       type: typeof val,
-      subType: this.getType(val)
+      kind: this.getType(val)
     }
 
     if (this.toStringFn) {
@@ -175,8 +175,8 @@ class TypeInspector {
   }
 }
 
-module.exports = TypeInspector
+module.exports = TypeInspect
 module.exports.inspect = (val) => {
-  const typeInspector = new TypeInspector()
-  return typeInspector.inspect(val)
+  const TypeInspect = new TypeInspect()
+  return TypeInspect.inspect(val)
 }

@@ -1,11 +1,11 @@
 'use strict'
 
 const inspect = require('inspect.js')
-const TypeInspector = require('../')
+const TypeInspect = require('../')
 
 const is = require('is-supported')
 
-describe('TypeInspector', () => {
+describe('TypeInspect', () => {
   describe('getType()', () => {
     const types = [
       { type: 'null', name: 'Null', value: null },
@@ -40,7 +40,7 @@ describe('TypeInspector', () => {
 
     types.forEach((t) => {
       it(`returns type ${t.type} if input is ${t.name}`, () => {
-        const ts = new TypeInspector()
+        const ts = new TypeInspect()
         inspect(ts.getType(t.value)).isEql(t.type)
       })
     })
@@ -49,20 +49,20 @@ describe('TypeInspector', () => {
   describe('inspectValue', () => {
     it('inspects a single value of type string', () => {
       const val = 'bla'
-      const ts = new TypeInspector()
+      const ts = new TypeInspect()
       inspect(ts.inspectValue(val)).isEql({
         type: 'string',
-        subType: 'string',
+        kind: 'string',
         value: 'bla'
       })
     })
 
     it('inspects a single value of type null', () => {
       const val = null
-        const ts = new TypeInspector()
+        const ts = new TypeInspect()
       inspect(ts.inspectValue(val)).isEql({
         type: 'object',
-        subType: 'null',
+        kind: 'null',
         value: null
       })
     })
@@ -72,7 +72,7 @@ describe('TypeInspector', () => {
     it('inspects an object', () => {
       const obj = {
         type: 'object',
-        subType: 'object',
+        kind: 'object',
         value: {
           foo: 'Foo',
           bar: {
@@ -81,16 +81,16 @@ describe('TypeInspector', () => {
         }
       }
 
-      const ts = new TypeInspector()
+      const ts = new TypeInspect()
       const inspected = ts.inspectObject(obj)
       inspect(inspected).isObject()
       inspect(inspected).isEql({
         type: 'object',
-        subType: 'object',
+        kind: 'object',
         value: {
-          foo: { type: 'string', subType: 'string', value: 'Foo' },
-          bar: { type: 'object', subType: 'object', value: {
-            bla: { type: 'number', subType: 'number', value: 123 }
+          foo: { type: 'string', kind: 'string', value: 'Foo' },
+          bar: { type: 'object', kind: 'object', value: {
+            bla: { type: 'number', kind: 'number', value: 123 }
           }}
         }
       })
@@ -99,7 +99,7 @@ describe('TypeInspector', () => {
     it('inspects an object with an array', () => {
       const obj = {
         type: 'object',
-        subType: 'object',
+        kind: 'object',
         value: {
           foo: 'Foo',
           bar: [
@@ -110,18 +110,18 @@ describe('TypeInspector', () => {
         }
       }
 
-      const ts = new TypeInspector()
+      const ts = new TypeInspect()
       const inspected = ts.inspectObject(obj)
       inspect(inspected).isObject()
       inspect(inspected).isEql({
         type: 'object',
-        subType: 'object',
+        kind: 'object',
         value: {
-          foo: { type: 'string', subType: 'string', value: 'Foo' },
-          bar: { type: 'object', subType: 'array', value: [
-            { type: 'string', subType: 'string', value: 'Foo' },
-            { type: 'number', subType: 'number', value: 123 },
-            { type: 'object', subType: 'null', value: null }
+          foo: { type: 'string', kind: 'string', value: 'Foo' },
+          bar: { type: 'object', kind: 'array', value: [
+            { type: 'string', kind: 'string', value: 'Foo' },
+            { type: 'number', kind: 'number', value: 123 },
+            { type: 'object', kind: 'null', value: null }
           ]}
         }
       })
@@ -138,19 +138,19 @@ describe('TypeInspector', () => {
         { bla: 'Blubb' }
       ]
 
-      const ts = new TypeInspector()
+      const ts = new TypeInspect()
       const inspected = ts.inspectArray(arr)
       inspect(inspected).isObject()
       inspect(inspected).hasProps({
         type: 'object',
-        subType: 'array',
+        kind: 'array',
         value: [
-          { type: 'string', subType: 'string', value: 'foo'},
-          { type: 'number', subType: 'number', value: 123},
-          { type: 'object', subType: 'null', value: null},
-          { type: 'function', subType: 'function', value: () => {}},
-          { type: 'object', subType: 'object', value: {
-            bla: { type: 'string', subType: 'string', value: 'Blubb' }}
+          { type: 'string', kind: 'string', value: 'foo'},
+          { type: 'number', kind: 'number', value: 123},
+          { type: 'object', kind: 'null', value: null},
+          { type: 'function', kind: 'function', value: () => {}},
+          { type: 'object', kind: 'object', value: {
+            bla: { type: 'string', kind: 'string', value: 'Blubb' }}
           }
         ]
       })
@@ -166,24 +166,24 @@ describe('TypeInspector', () => {
 
       const obj = {
         type: 'object',
-        subType: 'map',
+        kind: 'map',
         size: 3,
         name: 'Map',
         value: map,
       }
 
-      const ts = new TypeInspector()
+      const ts = new TypeInspect()
       const inspected = ts.inspectMap(obj)
       inspect(inspected).isObject()
       inspect(inspected).hasProps({
         type: 'object',
-        subType: 'map',
+        kind: 'map',
         value: [
-          [ 'one', { type: 'string', subType: 'string', value: 'two'} ],
-          [ 'two', { type: 'number', subType: 'number', value: 2} ],
-          [ 'three', { type: 'object', subType: 'null', value: { num: {
+          [ 'one', { type: 'string', kind: 'string', value: 'two'} ],
+          [ 'two', { type: 'number', kind: 'number', value: 2} ],
+          [ 'three', { type: 'object', kind: 'null', value: { num: {
             type: 'number',
-            subType: 'number',
+            kind: 'number',
             value: 3
           } }} ]
         ]
@@ -200,24 +200,24 @@ describe('TypeInspector', () => {
 
       const obj = {
         type: 'object',
-        subType: 'set',
+        kind: 'set',
         size: 3,
         name: 'Set',
         value: set,
       }
 
-      const ts = new TypeInspector()
+      const ts = new TypeInspect()
       const inspected = ts.inspectMap(obj)
       inspect(inspected).isObject()
       inspect(inspected).hasProps({
         type: 'object',
-        subType: 'set',
+        kind: 'set',
         value: [
-          { type: 'string', subType: 'string', value: 'two'},
-          { type: 'number', subType: 'number', value: 2},
-          { type: 'object', subType: 'null', value: { num: {
+          { type: 'string', kind: 'string', value: 'two'},
+          { type: 'number', kind: 'number', value: 2},
+          { type: 'object', kind: 'null', value: { num: {
             type: 'number',
-            subType: 'number',
+            kind: 'number',
             value: 3
           } }}
         ]

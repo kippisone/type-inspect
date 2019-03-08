@@ -1,6 +1,6 @@
 'use strict'
 
-const TypeInspector = require('./TypeInspector')
+const TypeInspect = require('./TypeInspect')
 const colorfy = require('colorfy')
 
 // 🅾🅰🅽🆄🅸🅽🆂🅳🆁 🅲🅵🅰🅶
@@ -20,59 +20,81 @@ const TYPESET = {
   'unknown': '?'
 }
 
+const COLORSET = {
+  'object': 11,
+  // 'null': '',
+  // 'array': '🅰',
+  // 'string': '🆂',
+  // 'number': '🅽',
+  // 'boolean': '🅱',
+  // 'undefined': '🆄',
+  // 'date': '🅳',
+  // 'regexp': '🆁',
+  // 'function': '🅵',
+  // 'unknown': '?'
+  'default': 100
+}
+
 class PrettyInspect {
   constructor (opts) {
     opts = opts || {}
     this.indention = 0
     this.indentionStr = '  '
-    this.cf = colorfy(opts.colors || process.tty.)
+    this.colorsEnabled = opts.colors || process.stdout.isTTY
+    if (this.colorsEnabled) {
+      this.cf = colorfy()
+    }
   }
 
   prettify (val) {
-    const ts = new TypeInspector()
+    const ts = new TypeInspect()
     const inspected = ts.inspect(val)
-    this.prettifyValue(inspected)
-    return this.colorfy()
+    const str = this.prettifyValue(inspected)
+    const typeSymbol = TYPESET[inspected.subType] || TYPESET[inspected.type] || TYPESET.unknown
+    if (this.colorsEnabled) {
+      const color = COLORSET[inspected.subType] || COLORSET.default
+      return this.cf.ddgrey(typeSymbol).ansi(color, str).colorfy()
+    }
+
+    return `${typeSymbol}${str}`
   }
 
   prettifyValue (inspected) {
-    const typeSymbol = TYPESET[inspected.subType] || TYPESET[inspected.type] || TYPESET.unknown
-
     if (inspected.type === 'object') {
       if (inspected.subType === 'null') {
-        return `${typeSymbol}null`
+        return `null`
       }
 
       if (inspected.subType === 'array') {
-        return `${typeSymbol}${this.prettifyArray(inspected)}`
+        return `${this.prettifyArray(inspected)}`
       }
 
       if (inspected.subType === 'date') {
-        return `${typeSymbol}${this.prettifyDate(inspected)}`
+        return `${this.prettifyDate(inspected)}`
       }
 
       // console.log('VAL', inspected)
       if (inspected.subType === 'regexp') {
-        return `${typeSymbol}${this.prettifyRegExp(inspected)}`
+        return `${this.prettifyRegExp(inspected)}`
       }
 
       if (inspected.subType === 'map') {
-        return `${typeSymbol}${this.prettifyMap(inspected)}`
+        return `${this.prettifyMap(inspected)}`
       }
 
       if (inspected.subType === 'set') {
-        return `${typeSymbol}${this.prettifySet(inspected)}`
+        return `${this.prettifySet(inspected)}`
       }
 
       const val = this.prettifyObject(inspected)
-      return `${typeSymbol}${val}`
+      return `${val}`
     }
 
     if (inspected.type === 'string') {
-      return `${typeSymbol}${this.prettifyString(inspected)}`
+      return `${this.prettifyString(inspected)}`
     }
 
-    return `${typeSymbol}${inspected.value}`
+    return `${inspected.value}`
   }
 
   prettifyObject (obj) {

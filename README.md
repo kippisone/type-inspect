@@ -1,7 +1,7 @@
-Type Inspeonector
-==============
+TypeInspect
+===========
 
-Inspects a ECMAScript object type
+Inspects a Javascript type and returns informations about the type
 
 ```js
 import TypeInspect from 'type-inspect'
@@ -10,7 +10,7 @@ const inspected = TypeInspect.inspect('foo')
 
 // inspected === {
 //   type: 'string',
-//   subType: 'string',
+//   kind: 'string',
 //   value: 'foo'
 // }
 
@@ -19,11 +19,11 @@ const inspected = TypeInspect.inspect({ bla: 'blubb' })
 
 // inspected === {
 //   type: 'object',
-//   subType: 'object',
+//   kind: 'object',
 //   value: {
 //      bla: {
 //        type: 'string',
-//        subType: 'string'
+//        kind: 'string'
 //        value: 'blubb'
 //      }
 //   }
@@ -34,10 +34,10 @@ const inspected = TypeInspect.inspect(['one', 2])
 
 // inspected === {
 //   type: 'object',
-//   subType: 'array',
+//   kind: 'array',
 //   value: [
-//     { type: 'string', subType: 'string', value: 'one' },
-//     { type: 'number', subType: 'number', value: 2 }
+//     { type: 'string', kind: 'string', value: 'one' },
+//     { type: 'number', kind: 'number', value: 2 }
 //   ]
 // }
 ```
