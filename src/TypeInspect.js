@@ -175,8 +175,8 @@ class TypeInspect {
   }
 }
 
-module.exports = TypeInspect
+module.exports.TypeInspect = TypeInspect
 module.exports.inspect = (val) => {
-  const TypeInspect = new TypeInspect()
-  return TypeInspect.inspect(val)
+  const typeInspect = new TypeInspect()
+  return typeInspect.inspect(val)
 }

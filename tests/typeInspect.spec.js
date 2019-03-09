@@ -1,7 +1,7 @@
 'use strict'
 
 const inspect = require('inspect.js')
-const TypeInspect = require('../')
+const TypeInspect = require('../').TypeInspect
 
 const is = require('is-supported')
 

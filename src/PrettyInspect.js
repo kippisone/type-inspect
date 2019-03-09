@@ -1,6 +1,6 @@
 'use strict'
 
-const TypeInspect = require('./TypeInspect')
+const TypeInspect = require('./TypeInspect').TypeInspect
 const colorfy = require('colorfy')
 
 // 🅾🅰🅽🆄🅸🅽🆂🅳🆁 🅲🅵🅰🅶
@@ -50,9 +50,9 @@ class PrettyInspect {
     const ts = new TypeInspect()
     const inspected = ts.inspect(val)
     const str = this.prettifyValue(inspected)
-    const typeSymbol = TYPESET[inspected.subType] || TYPESET[inspected.type] || TYPESET.unknown
+    const typeSymbol = TYPESET[inspected.kind] || TYPESET[inspected.type] || TYPESET.unknown
     if (this.colorsEnabled) {
-      const color = COLORSET[inspected.subType] || COLORSET.default
+      const color = COLORSET[inspected.kind] || COLORSET.default
       return this.cf.ddgrey(typeSymbol).ansi(color, str).colorfy()
     }
 
@@ -61,28 +61,28 @@ class PrettyInspect {
 
   prettifyValue (inspected) {
     if (inspected.type === 'object') {
-      if (inspected.subType === 'null') {
+      if (inspected.kind === 'null') {
         return `null`
       }
 
-      if (inspected.subType === 'array') {
+      if (inspected.kind === 'array') {
         return `${this.prettifyArray(inspected)}`
       }
 
-      if (inspected.subType === 'date') {
+      if (inspected.kind === 'date') {
         return `${this.prettifyDate(inspected)}`
       }
 
       // console.log('VAL', inspected)
-      if (inspected.subType === 'regexp') {
+      if (inspected.kind === 'regexp') {
         return `${this.prettifyRegExp(inspected)}`
       }
 
-      if (inspected.subType === 'map') {
+      if (inspected.kind === 'map') {
         return `${this.prettifyMap(inspected)}`
       }
 
-      if (inspected.subType === 'set') {
+      if (inspected.kind === 'set') {
         return `${this.prettifySet(inspected)}`
       }
 
@@ -160,7 +160,7 @@ class PrettyInspect {
   }
 }
 
-module.exports = PrettyInspect
+module.exports.PrettyInspect = PrettyInspect
 module.exports.prettify = (val) => {
   const prettyInspect = new PrettyInspect()
   return prettyInspect.prettify(val)

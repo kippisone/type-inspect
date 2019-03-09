@@ -1,7 +1,7 @@
 'use strict'
 
 const inspect = require('inspect.js')
-const PrettyInspect = require('../src/PrettyInspect')
+const PrettyInspect = require('../src/PrettyInspect').PrettyInspect
 
 describe('PrettyInspect', () => {
   describe('indent()', () => {
