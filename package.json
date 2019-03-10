@@ -2,7 +2,7 @@
   "name": "type-inspect",
   "version": "1.2.0",
   "description": "Type Inspector",
-  "main": "src/TypeInspect.js",
+  "main": "src/app.js",
   "scripts": {
     "test": "mocha --reporter lagoon-reporter tests/*.spec.js"
   },
@@ -29,6 +29,6 @@
     "mocha": "^6.0.2"
   },
   "dependencies": {
-    "colorfy": "^2.0.4"
+    "colorfy": "^2.1.0"
   }
 }

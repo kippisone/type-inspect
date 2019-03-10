@@ -6,7 +6,7 @@ const TypeInspect = require('../').TypeInspect
 const is = require('is-supported')
 
 describe('TypeInspect', () => {
-  describe('getType()', () => {
+  describe('getKind()', () => {
     const types = [
       { type: 'null', name: 'Null', value: null },
       { type: 'undefined', name: 'Undefined', value: undefined },
@@ -41,7 +41,7 @@ describe('TypeInspect', () => {
     types.forEach((t) => {
       it(`returns type ${t.type} if input is ${t.name}`, () => {
         const ts = new TypeInspect()
-        inspect(ts.getType(t.value)).isEql(t.type)
+        inspect(ts.getKind(t.value)).isEql(t.type)
       })
     })
   })

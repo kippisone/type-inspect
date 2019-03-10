@@ -7,7 +7,7 @@ class TypeInspect {
     this.toStringFn = opts.hasOwnProperty('toString') ? opts.toString : null
   }
 
-  getType (value) {
+  getKind (value) {
     const type = typeof value
     if (value === null) return 'null'
     if (value === undefined) return 'undefined'
@@ -42,7 +42,7 @@ class TypeInspect {
   inspect (value) {
     const inspected = {
       type: typeof value,
-      kind: this.getType(value),
+      kind: this.getKind(value),
       value
     }
 
@@ -92,7 +92,7 @@ class TypeInspect {
   inspectArray (arr, dept) {
     const inspectedValue = {
       type: typeof arr,
-      kind: this.getType(arr)
+      kind: this.getKind(arr)
     }
 
     if (this.toStringFn) {
@@ -115,7 +115,7 @@ class TypeInspect {
   inspectValue (val, dept) {
     const inspectedValue = {
       type: typeof val,
-      kind: this.getType(val)
+      kind: this.getKind(val)
     }
 
     if (this.toStringFn) {
@@ -176,7 +176,3 @@ class TypeInspect {
 }
 
 module.exports.TypeInspect = TypeInspect
-module.exports.inspect = (val) => {
-  const typeInspect = new TypeInspect()
-  return typeInspect.inspect(val)
-}
