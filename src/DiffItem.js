@@ -1,3 +1,5 @@
+const Colorfy = require('./Colorfy').Colorfy
+
 class DiffItem {
   get isSameType () {
     return !!this.type && !!this.kind
@@ -116,6 +118,16 @@ class DiffItem {
       const diffItem = new DiffItem(leftValue[i], rightValue[i])
       this.values.push(diffItem)
     }
+  }
+
+  print (isTTY) {
+    const colorfy = new Colorfy()
+    return colorfy.print(this.diffResult, isTTY)
+  }
+
+  parse (isTTY) {
+    const colorfy = new Colorfy()
+    return colorfy.parse(this.diffResult, isTTY)
   }
 }
 

@@ -1,4 +1,4 @@
-'use strict'
+const InspectItem = require('./InspectItem').InspectItem
 
 class TypeInspect {
   constructor (opts) {
@@ -40,6 +40,10 @@ class TypeInspect {
   }
 
   inspect (value) {
+    return new InspectItem(this.inspectAny(value))
+  }
+
+  inspectAny (value) {
     const inspected = {
       type: typeof value,
       kind: this.getKind(value),
@@ -77,7 +81,7 @@ class TypeInspect {
       if (Array.isArray(val)) {
         val = this.inspectArray(val, dept - 1)
       } else if (typeof val === 'object' && val !== null) {
-        val = this.inspect(val, dept - 1)
+        val = this.inspectAny(val, dept - 1)
       } else {
         val = this.inspectValue(val)
       }
@@ -103,7 +107,7 @@ class TypeInspect {
       if (Array.isArray(item)) {
         return this.inspectArray(item, dept - 1)
       } else if (typeof item === 'object' && item !== null) {
-        return this.inspect(item, dept - 1)
+        return this.inspectAny(item, dept - 1)
       }
 
       return this.inspectValue(item, dept - 1)
@@ -129,7 +133,7 @@ class TypeInspect {
   inspectMap (inspected) {
     const mapData = []
     inspected.value.forEach((val, key) => {
-      mapData.push([key, this.inspect(val)])
+      mapData.push([key, this.inspectAny(val)])
     })
 
     inspected.name = 'Map'
@@ -141,7 +145,7 @@ class TypeInspect {
   inspectSet (inspected) {
     const setData = []
     inspected.value.forEach((val) => {
-      setData.push(this.inspect(val))
+      setData.push(this.inspectAny(val))
     })
 
     inspected.name = 'Set'

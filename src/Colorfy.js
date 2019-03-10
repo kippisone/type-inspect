@@ -1,5 +1,3 @@
-'use strict'
-
 const colorfy = require('colorfy')
 
 const TYPESET = {
@@ -36,8 +34,30 @@ class Colorfy {
         return
       }
 
-      this.colorfyObject(diff)
-      return
+      if (diff.kind === 'date') {
+        this.colorfyDate(diff)
+        return
+      }
+
+      if (diff.kind === 'regexp') {
+        this.colorfyRegExp(diff)
+        return
+      }
+
+      if (diff.kind === 'map') {
+        this.colorfyMap(diff)
+        return
+      }
+
+      if (diff.kind === 'set') {
+        this.colorfySet(diff)
+        return
+      }
+
+      if (diff.kind === 'object') {
+        this.colorfyObject(diff)
+        return
+      }
     }
 
     if (diff.type === 'string') {
@@ -60,12 +80,17 @@ class Colorfy {
       return
     }
 
+    if (diff.type === 'function') {
+      this.colorfyFunction(diff)
+      return
+    }
+
     if (diff.typeAdded !== diff.typeRemoved) {
       this.colorfyDifferentTypes(diff)
       return
     }
 
-    throw new Error('Unsupported diff value: ' + diff.type)
+    throw new Error('Unsupported diff value: ' + diff.type + ' kind: ' + diff.kind)
   }
 
   colorfyObject (obj) {
@@ -123,16 +148,16 @@ class Colorfy {
     this.cf.txt('"')
   }
 
-  colorfyNumber (str) {
-    if (str.value) {
-      this.cf.txt(str.value)
+  colorfyNumber (item) {
+    if (item.hasOwnProperty('value')) {
+      this.cf.txt(isNaN(item.value) && item.value !== undefined ? 'NaN' : `${item.value}`)
     } else {
-      if (str.hasOwnProperty('valueAdded')) {
-        this.cf.green(`${str.valueAdded}`)
+      if (item.hasOwnProperty('valueAdded')) {
+        this.cf.green(isNaN(item.valueAdded) && item.valueAdded !== undefined ? 'NaN' : `${item.valueAdded}`)
       }
 
-      if (str.hasOwnProperty('valueRemoved')) {
-        this.cf.red(`${str.valueRemoved}`)
+      if (item.hasOwnProperty('valueRemoved')) {
+        this.cf.red(isNaN(item.valueRemoved) && item.valueRemoved !== undefined ? 'NaN' : `${item.valueRemoved}`)
       }
     }
   }
@@ -149,6 +174,58 @@ class Colorfy {
         this.cf.red(`${item.valueRemoved}`)
       }
     }
+  }
+
+  colorfyFunction (item) {
+    if (item.hasOwnProperty('value')) {
+      this.cf.txt(`${item.value}`)
+    } else {
+      if (item.hasOwnProperty('valueAdded')) {
+        this.cf.green(`${item.valueAdded}`)
+      }
+
+      if (item.hasOwnProperty('valueRemoved')) {
+        this.cf.red(`${item.valueRemoved}`)
+      }
+    }
+  }
+
+  colorfyDate (item) {
+    if (item.hasOwnProperty('value')) {
+      this.cf.txt(`Date(${item.value})`)
+    } else {
+      if (item.hasOwnProperty('valueAdded')) {
+        this.cf.green(`Date(${item.valueAdded})`)
+      }
+
+      if (item.hasOwnProperty('valueRemoved')) {
+        this.cf.red(`Date(${item.valueRemoved})`)
+      }
+    }
+  }
+
+  colorfyRegExp (item) {
+    if (item.hasOwnProperty('value')) {
+      this.cf.txt(`${item.value}`)
+    } else {
+      if (item.hasOwnProperty('valueAdded')) {
+        this.cf.green(`${item.valueAdded}`)
+      }
+
+      if (item.hasOwnProperty('valueRemoved')) {
+        this.cf.red(`${item.valueRemoved}`)
+      }
+    }
+  }
+
+  colorfyMap (item) {
+    this.cf.txt('Map ')
+    this.colorfyObject(item)
+  }
+
+  colorfySet (item) {
+    this.cf.txt('Set ')
+    this.colorfyArray(item)
   }
 
   colorfyDifferentTypes (item) {

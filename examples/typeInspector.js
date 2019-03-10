@@ -1,6 +1,6 @@
 'use strict'
 
-const PrettyInspect = require('../src/PrettyInspect');
+const TypeInspect = require('../');
 
 const testMap = new Map()
 testMap.set('one', 'One');
@@ -31,7 +31,9 @@ const fixtures = [
 
 fixtures.forEach((item) => {
   console.log(`${item[0]} ----------------------------`)
-  console.log(PrettyInspect.prettify(item[1]))
+  const inspected = TypeInspect.inspect(item[1])
+  console.log('')
+  inspected.print()
   console.log('')
   console.log('')
 })
