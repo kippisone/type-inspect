@@ -72,22 +72,15 @@ class DiffItem {
       }
     }
 
-    // if (this.type === 'string' || this.type === 'number') {
     this.handleComparableValue(leftValue, rightValue)
-    // }
-
-    if (!this.type) {
-      this.valueAdded = leftValue
-      this.valueRemoved = rightValue
-    }
   }
 
   handleComparableValue (leftValue, rightValue) {
     if (leftValue === rightValue) {
       this.value = leftValue
-    } else if (leftValue && (rightValue === undefined || rightValue === 'undefined')) {
+    } else if (leftValue !== undefined && (rightValue === undefined || rightValue === 'undefined')) {
       this.valueAdded = leftValue
-    } else if (rightValue && (leftValue === undefined || leftValue === 'undefined')) {
+    } else if (rightValue !== undefined && (leftValue === undefined || leftValue === 'undefined')) {
       this.valueRemoved = rightValue
     } else {
       this.valueAdded = leftValue

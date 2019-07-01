@@ -91,18 +91,14 @@ describe('TypeDiff', () => {
             typeAdded: 'string',
             kind: 'string',
             kindAdded: 'string',
-            key: 'bla',
             keyAdded: 'bla',
-            value: 'Bal',
             valueAdded: 'Bal',
           }, {
             type: 'string',
             typeRemoved: 'string',
             kind: 'string',
             kindRemoved: 'string',
-            key: 'blubb',
             keyRemoved: 'blubb',
-            value: 'Bla',
             valueRemoved: 'Bla',
           }
         ]
@@ -159,7 +155,6 @@ describe('TypeDiff', () => {
         typeRemoved: 'number',
         kind: 'number',
         kindRemoved: 'number',
-        value: 456,
         valueRemoved: 456
       })
     })
@@ -174,7 +169,6 @@ describe('TypeDiff', () => {
         kind: 'number',
         typeAdded: 'number',
         kindAdded: 'number',
-        value: 123,
         valueAdded: 123,
       })
     })

@@ -3,7 +3,7 @@ const TypeInspect = require('../')
 const left = {
   bla: 'Bla',
   blub: 'Blubb',
-  blob: undefined
+  blob: true
 }
 
 const right = {
