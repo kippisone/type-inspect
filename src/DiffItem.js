@@ -50,10 +50,8 @@ class DiffItem {
     if (leftKey === rightKey) {
       this.key = leftKey
     } else if (leftKey && !rightKey) {
-      this.key = leftKey
       this.keyAdded = leftKey
     } else if (rightKey && !leftKey) {
-      this.key = rightKey
       this.keyRemoved = rightKey
     } else {
       this.keyAdded = leftKey
@@ -88,10 +86,8 @@ class DiffItem {
     if (leftValue === rightValue) {
       this.value = leftValue
     } else if (leftValue && (rightValue === undefined || rightValue === 'undefined')) {
-      this.value = leftValue
       this.valueAdded = leftValue
     } else if (rightValue && (leftValue === undefined || leftValue === 'undefined')) {
-      this.value = rightValue
       this.valueRemoved = rightValue
     } else {
       this.valueAdded = leftValue
