@@ -6,9 +6,9 @@ class DiffItem {
   }
 
   constructor (left, right) {
-    if (arguments.length === 2) {
-      left = left || {}
-      right = right || {}
+    if (arguments.length > 0) {
+      left = left || { type: 'undefined', kind: 'undefined', value: undefined }
+      right = right || { type: 'undefined', kind: 'undefined', value: undefined }
       this.setType(left.type, right.type)
       this.setKind(left.kind, right.kind)
       this.setValues(left.value, right.value)
@@ -26,6 +26,7 @@ class DiffItem {
       this.typeRemoved = rightType
     } else {
       this.typeAdded = leftType
+
       this.typeRemoved = rightType
     }
   }
@@ -93,14 +94,16 @@ class DiffItem {
   }
 
   handlePlainObject (leftValue, rightValue) {
-    const leftKeys = Object.keys(leftValue)
-    const rightKeys = Object.keys(rightValue)
+    const leftKeys = leftValue ? Object.keys(leftValue) : []
+    const rightKeys = rightValue ? Object.keys(rightValue) : []
     const allKeys = leftKeys
       .concat(rightKeys)
       .filter((val, index, arr) => arr.indexOf(val) === index)
 
     this.values = allKeys.map((key) => {
-      const diffItem = new DiffItem(leftValue[key], rightValue[key])
+      const left = leftValue ? leftValue[key] : undefined
+      const right = rightValue ? rightValue[key] : undefined
+      const diffItem = new DiffItem(left, right)
       diffItem.setKey(
         leftKeys.indexOf(key) === -1 ? null : key,
         rightKeys.indexOf(key) === -1 ? null : key
@@ -115,7 +118,9 @@ class DiffItem {
 
     const len = Math.max(leftValue.length, rightValue.length)
     for (let i = 0; i < len; i++) {
-      const diffItem = new DiffItem(leftValue[i], rightValue[i])
+      const left = leftValue[i] || { type: 'undefined', kind: 'undefined', value: undefined }
+      const right = rightValue[i] || { type: 'undefined', kind: 'undefined', value: undefined }
+      const diffItem = new DiffItem(left, right)
       this.values.push(diffItem)
     }
   }
