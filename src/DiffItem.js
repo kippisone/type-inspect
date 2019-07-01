@@ -87,6 +87,12 @@ class DiffItem {
   handleComparableValue (leftValue, rightValue) {
     if (leftValue === rightValue) {
       this.value = leftValue
+    } else if (leftValue && (rightValue === undefined || rightValue === 'undefined')) {
+      this.value = leftValue
+      this.valueAdded = leftValue
+    } else if (rightValue && (leftValue === undefined || leftValue === 'undefined')) {
+      this.value = rightValue
+      this.valueRemoved = rightValue
     } else {
       this.valueAdded = leftValue
       this.valueRemoved = rightValue

@@ -93,8 +93,8 @@ describe('TypeDiff', () => {
             kindAdded: 'string',
             key: 'bla',
             keyAdded: 'bla',
+            value: 'Bal',
             valueAdded: 'Bal',
-            valueRemoved: undefined
           }, {
             type: 'string',
             typeRemoved: 'string',
@@ -102,8 +102,8 @@ describe('TypeDiff', () => {
             kindRemoved: 'string',
             key: 'blubb',
             keyRemoved: 'blubb',
+            value: 'Bla',
             valueRemoved: 'Bla',
-            valueAdded: undefined
           }
         ]
       })
@@ -159,7 +159,7 @@ describe('TypeDiff', () => {
         typeRemoved: 'number',
         kind: 'number',
         kindRemoved: 'number',
-        valueAdded: undefined,
+        value: 456,
         valueRemoved: 456
       })
     })
@@ -174,8 +174,8 @@ describe('TypeDiff', () => {
         kind: 'number',
         typeAdded: 'number',
         kindAdded: 'number',
+        value: 123,
         valueAdded: 123,
-        valueRemoved: undefined
       })
     })
 
@@ -450,7 +450,7 @@ describe('TypeDiff', () => {
       const right = 456
 
       typeDiff.diff(left, right)
-      inspect(typeDiff.parse(false)).isEql('undefined456')
+      inspect(typeDiff.parse(false)).isEql('456')
     })
 
     it('diffs right missing number', () => {
@@ -458,7 +458,7 @@ describe('TypeDiff', () => {
       const right = undefined
 
       typeDiff.diff(left, right)
-      inspect(typeDiff.parse(false)).isEql('123undefined')
+      inspect(typeDiff.parse(false)).isEql('123')
     })
 
     it('diffs two different strings', () => {
