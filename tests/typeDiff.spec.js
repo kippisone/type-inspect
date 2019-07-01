@@ -359,7 +359,7 @@ describe('TypeDiff', () => {
 
       inspect(typeDiff.print).isFunction()
       inspect(typeDiff.diffResult).isObject()
-      inspect(typeDiff.parse(false)).isEql('{\n  bla: "Bla",\n  blub: "BlubbBlobb",\n  blob: undefined,\n  blab: undefinednull\n}')
+      inspect(typeDiff.parse(false)).isEql('{\n  bla: "Bla",\n  blub: "BlubbBlobb",\n  blob: undefined,\n  blab: null\n}')
     })
 
     it('diffs two inspected values', () => {
