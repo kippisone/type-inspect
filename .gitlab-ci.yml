@@ -9,14 +9,6 @@ stages:
    - npm install
    - npm run test
 
-Test Node 6:
-  image: node:6
-  <<: *test
-
-Test Node 7:
-  image: node:7
-  <<: *test
-
 Test Node 8:
   image: node:8
   <<: *test
@@ -31,6 +23,10 @@ Test Node 10:
 
 Test Node 11:
   image: node:11
+  <<: *test
+
+Test Node 12:
+  image: node:12
   <<: *test
 
 Publish:
