@@ -110,8 +110,11 @@ class DiffItem {
 
   handleArray (leftValue, rightValue) {
     this.values = []
+    
+    const leftLength = leftValue ? leftValue.length : 0
+    const rightLength = rightValue ? rightValue.length : 0
 
-    const len = Math.max(leftValue.length, rightValue.length)
+    const len = Math.max(leftLength, rightLength)
     for (let i = 0; i < len; i++) {
       const left = leftValue[i] || { type: 'undefined', kind: 'undefined', value: undefined }
       const right = rightValue[i] || { type: 'undefined', kind: 'undefined', value: undefined }
